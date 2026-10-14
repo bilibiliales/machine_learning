@@ -318,3 +318,48 @@ for K in K_list:
         f"正确={correct}/40, "
         f"识别率={accuracy * 100:.2f}%"
     )
+
+def show_projection_comparison(image, mean_face, eigenfaces, k=50):
+    """
+    显示 PCA 投影前后的图片。
+
+    image: 原始人脸图像的一维向量，形状为 (10304,)
+    mean_face: 平均脸，形状为 (10304,)
+    eigenfaces: 特征脸矩阵，形状为 (10304, n_components)
+    k: 使用前 k 个特征脸进行投影和重建
+    """
+    # 1. 中心化
+    centered = image - mean_face
+
+    # 2. 选择前 k 个特征脸
+    E = eigenfaces[:, :k]
+
+    # 3. 投影到低维 PCA 空间
+    z = E.T @ centered
+
+    # 4. 从低维空间重建图像
+    reconstructed = mean_face + E @ z
+
+    # 5. 显示投影前后的图片
+    fig, axes = plt.subplots(1, 2, figsize=(8, 4))
+
+    axes[0].imshow(image.reshape(112, 92), cmap="gray")
+    axes[0].set_title("Before PCA")
+    axes[0].axis("off")
+
+    axes[1].imshow(reconstructed.reshape(112, 92), cmap="gray")
+    axes[1].set_title(f"After PCA (k={k})")
+    axes[1].axis("off")
+
+    plt.tight_layout()
+    plt.show()
+
+    return z, reconstructed
+
+# 显示训练集中第一张人脸投影前后的效果
+z, reconstructed = show_projection_comparison(
+    image=X[:, 0],
+    mean_face=mean_face,
+    eigenfaces=eigenfaces,
+    k=50
+)
