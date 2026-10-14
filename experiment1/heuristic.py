@@ -1,8 +1,21 @@
 import math
+import numpy as np
 import random
+import matplotlib.pyplot as plt
 
 def fx(x):
     return x**5+x**4+math.exp(x)-11*x+1
+
+def show():
+    x = np.linspace(-2.5, 2.5, 100)
+    y = np.array([fx(i) for i in x])
+    y0 = np.array([0 for i in x])
+    dy_dx = np.gradient(y, x)
+    plt.plot(x, dy_dx, label='f\'(x)')
+    plt.plot(x, y, label='f(x)')
+    plt.plot(x, y0, label='y=0')
+    plt.legend()
+    plt.show()
 
 def hillClimbing(x, left, right):
     delta = 0.01
@@ -22,22 +35,22 @@ def hillClimbing(x, left, right):
         else:
             delta /= 2
 
-        print(t, "  x=", x, "  f(x)=", fx(x), "  delta=", delta)
+        #print(t, "  x=", x, "  f(x)=", fx(x), "  delta=", delta)
 
         if abs(fx(x)) < 1e-10:
             print("Converged")
             break
 
     return x
+show()
 
-print("x=0时,f(x)=" + str(fx(0)) + ">0")
-print("x=1时,f(x)=" + str(fx(1)) + "<0")
-print("所以在[0,1]区间内有根")
-left=0
-right=1
-x0 = random.random() * (right - left) + left
-print("Initial x:", x0)
-x = hillClimbing(x0, left, right)
+areas=np.array([[-3,-2],[0,1],[1,2]])
+for area in areas:
+    left=area[0]
+    right=area[1]
+    x0 = random.random() * (right - left) + left
+    print("Initial x:", x0)
+    x = hillClimbing(x0, left, right)
 
-print(x)
-print(fx(x))
+    print(x)
+    print(fx(x))
