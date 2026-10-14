@@ -1,7 +1,5 @@
 import math
-
 import numpy as np
-
 
 def fx(x):
     return x**5+x**4+math.exp(x)-11*x+1

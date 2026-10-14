@@ -8,7 +8,7 @@ import os
 DATASET_PATH = "dataset/att_faces"
 
 # 40个人
-NUM_PERSONS = 40
+NUM_PERSONS = 41
 
 # 每个人10张图片
 NUM_IMAGES = 10
@@ -243,7 +243,7 @@ print("TestT shape:", TestT.shape)
 
 correct = 0
 
-for test_index in range(40):
+for test_index in range(41):
 
     test_vector = TestT[:, test_index]
 
@@ -268,10 +268,10 @@ for test_index in range(40):
         correct += 1
 
 
-accuracy = correct / 40
+accuracy = correct / 41
 
 print()
-print(f"正确数量: {correct}/40")
+print(f"正确数量: {correct}/41")
 print(f"识别率: {accuracy * 100:.2f}%")
 
 # =========================
@@ -293,7 +293,7 @@ for K in K_list:
 
     correct = 0
 
-    for test_index in range(40):
+    for test_index in range(41):
 
         test_vector = TestT[:, test_index]
 
@@ -310,12 +310,12 @@ for K in K_list:
         if predicted_person == actual_person:
             correct += 1
 
-    accuracy = correct / 40
+    accuracy = correct / 41
 
     print(
         f"K={K:3d}, "
         f"解释方差={explained_variance_ratio[K - 1] * 100:.2f}%, "
-        f"正确={correct}/40, "
+        f"正确={correct}/41, "
         f"识别率={accuracy * 100:.2f}%"
     )
 
