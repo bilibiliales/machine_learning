@@ -247,7 +247,7 @@ if __name__ == "__main__":
     MAX_VOCAB = 50000           # 最大词汇量
     EMBEDDING_DIM = 128         # 词嵌入维度
     HIDDEN_DIM = 256            # LSTM隐藏层维度
-    EPOCHS = 1                 # 训练轮数
+    EPOCHS = 10                # 训练轮数
     BATCH_SIZE = 128            # 批大小
     TRAIN_RATIO = 0.9          # 训练集比例
     MAX_LINES_PER_FILE = None   # 调试时可设 500 快速跑通全流程，验证无误后改回 None 跑全量

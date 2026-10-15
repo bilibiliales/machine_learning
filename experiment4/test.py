@@ -11,15 +11,13 @@ import numpy as np
 import tensorflow as tf
 from tensorflow import keras
 
-# ===================== 配置区（必须与 embedding.py 一致）=====================
+# ===================== 配置区=====================
 DATA_DIR = os.path.join(os.path.dirname(__file__), "199801")
 MODEL_DIR = os.path.dirname(__file__)
 MAX_LEN = 60
 MAX_VOCAB = 50000
 VOCAB_CACHE = os.path.join(MODEL_DIR, "vocab.pkl")
 # ===========================================================================
-
-
 # -------------------------- 词典缓存读写 --------------------------
 def save_vocab(word2idx, idx2tag):
     with open(VOCAB_CACHE, "wb") as f:
@@ -29,7 +27,6 @@ def save_vocab(word2idx, idx2tag):
 def load_vocab():
     with open(VOCAB_CACHE, "rb") as f:
         return pickle.load(f)
-
 
 # -------------------------- 语料解析（与 embedding.py 一致）--------------------------
 def read_text(path):
@@ -41,9 +38,7 @@ def read_text(path):
             continue
     raise ValueError(f"无法解码文件: {path}")
 
-
 def parse_line(line):
-    """返回 [(word, tag), ...]，正确处理 [xx/n yy/v]nt 合并标注"""
     pairs = []
     i = 0
     n = len(line)
