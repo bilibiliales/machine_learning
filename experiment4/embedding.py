@@ -11,12 +11,6 @@ from tensorflow.keras.preprocessing.sequence import pad_sequences
 # ============================================================
 
 def parse_line(line):
-    """
-    解析一行人民日报语料，返回 [(word, tag), ...]
-    普通: 迈向/v
-    合并: [中央/n 人民/n 广播/vn 电台/n]nt  ->  (中央人民政府广播电台, nt)
-    段首编号 19980101-01-001-001/m 会被跳过
-    """
     line = line.strip()
     if not line:
         return []
@@ -80,7 +74,6 @@ def parse_line(line):
 
 
 def load_corpus(data_dir, max_lines_per_file=None):
-    """max_lines_per_file 用于调试时限制每个文件读取行数，None 表示全量。"""
     sentences = []
     tags = []
 
@@ -110,7 +103,6 @@ def load_corpus(data_dir, max_lines_per_file=None):
                     break
 
     return sentences, tags
-
 
 # ============================================================
 # 2. 构建字典（词表 + 标签表）
@@ -175,7 +167,6 @@ def sentences_to_ids(sentences, tags, word2idx, tag2idx, max_len=60):
     print(f"训练样本形状: X={X.shape}, y={y.shape}")
 
     return X, y
-
 
 # ============================================================
 # 4. 构建循环神经网络模型
@@ -246,11 +237,9 @@ def predict_pos(model, words, word2idx, tag2idx, idx2tag, max_len=60):
 
     return results
 
-
 # ============================================================
 # 主流程
 # ============================================================
-
 if __name__ == "__main__":
     # ---------- 配置 ----------
     DATA_DIR = "./199801"       # 语料目录
@@ -258,12 +247,11 @@ if __name__ == "__main__":
     MAX_VOCAB = 50000           # 最大词汇量
     EMBEDDING_DIM = 128         # 词嵌入维度
     HIDDEN_DIM = 256            # LSTM隐藏层维度
-    EPOCHS = 10                 # 训练轮数
+    EPOCHS = 1                 # 训练轮数
     BATCH_SIZE = 128            # 批大小
     TRAIN_RATIO = 0.9          # 训练集比例
     MAX_LINES_PER_FILE = None   # 调试时可设 500 快速跑通全流程，验证无误后改回 None 跑全量
 
-    # ---------- 步骤1: 加载语料 ----------
     print("=" * 60)
     print("步骤1: 加载语料")
     print("=" * 60)
@@ -274,7 +262,6 @@ if __name__ == "__main__":
     print(f"\n示例句子: {' / '.join(sentences[0][:10])}")
     print(f"示例标签: {' / '.join(tags[0][:10])}")
 
-    # ---------- 步骤2: 构建字典 ----------
     print("\n" + "=" * 60)
     print("步骤2: 构建字典")
     print("=" * 60)
@@ -282,7 +269,6 @@ if __name__ == "__main__":
         sentences, tags, max_vocab=MAX_VOCAB
     )
 
-    # ---------- 步骤3: 生成训练样本 ----------
     print("\n" + "=" * 60)
     print("步骤3: 生成训练样本")
     print("=" * 60)
@@ -303,7 +289,6 @@ if __name__ == "__main__":
     print(f"训练集大小: {len(X_train)}")
     print(f"验证集大小: {len(X_val)}")
 
-    # ---------- 步骤4: 构建模型 ----------
     print("\n" + "=" * 60)
     print("步骤4: 构建模型")
     print("=" * 60)
@@ -316,7 +301,6 @@ if __name__ == "__main__":
     )
     model.summary()
 
-    # ---------- 步骤5: 训练模型 ----------
     print("\n" + "=" * 60)
     print("步骤5: 训练模型")
     print("=" * 60)
@@ -325,7 +309,6 @@ if __name__ == "__main__":
         epochs=EPOCHS, batch_size=BATCH_SIZE
     )
 
-    # ---------- 步骤6: 测试词性标注 ----------
     print("\n" + "=" * 60)
     print("步骤6: 测试词性标注")
     print("=" * 60)
@@ -365,7 +348,6 @@ if __name__ == "__main__":
         print(f"  {w}/{t}", end="")
     print()
 
-    # ---------- 步骤7: 计算验证集准确率 ----------
     print("\n" + "=" * 60)
     print("步骤7: 验证集评估")
     print("=" * 60)

@@ -1,21 +1,9 @@
 import math
 import numpy as np
 import random
-import matplotlib.pyplot as plt
 
 def fx(x):
     return x**5+x**4+math.exp(x)-11*x+1
-
-def show():
-    x = np.linspace(-2.5, 2.5, 100)
-    y = np.array([fx(i) for i in x])
-    y0 = np.array([0 for i in x])
-    dy_dx = np.gradient(y, x)
-    plt.plot(x, dy_dx, label='f\'(x)')
-    plt.plot(x, y, label='f(x)')
-    plt.plot(x, y0, label='y=0')
-    plt.legend()
-    plt.show()
 
 def hillClimbing(x, left, right):
     delta = 0.01
@@ -35,14 +23,11 @@ def hillClimbing(x, left, right):
         else:
             delta /= 2
 
-        #print(t, "  x=", x, "  f(x)=", fx(x), "  delta=", delta)
-
         if abs(fx(x)) < 1e-10:
             print("Converged")
             break
 
     return x
-show()
 
 areas=np.array([[-3,-2],[0,1],[1,2]])
 for area in areas:
